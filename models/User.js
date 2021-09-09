@@ -3,7 +3,7 @@ const UserSchema = new mongoose.Schema(
   {
     subject: {
       type: String,
-      enum: ["Toán", "Nữ", "Khác"],
+      enum: ["Toán", "Lý", "Hóa", "Tiếng Anh", "Văn"],
       default: "Tiếng Anh",
     },
   },
