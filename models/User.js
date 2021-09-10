@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema(
       enum: ["Trực tuyến", "Tại Nhà", "Cả hai"],
       default: "Cả hai",
     },
+    classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
     phoneNumber: { type: Number },
     teachingPrice: { type: Array, default: [] },
     timeTable: { type: Array, default: [] },
