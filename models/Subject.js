@@ -1,36 +1,35 @@
 const mongoose = require("mongoose");
-const SubjectSchema = new mongoose.Schema(
-  {
-    username: { type: String, require: true, min: 3, max: 20, unique: true },
-    fullname: { type: String, max: 30 },
-    email: { type: String, require: true, max: 50, unique: true },
-    password: { type: String, required: true, min: 6 },
-    profilePicture: { type: String, default: "" },
-    followers: { type: Array, default: [] },
-    followings: { type: Array, default: [] },
-    isAdmin: { type: Boolean, default: false },
-    desc: { type: String, max: 500, default: "Tôi là môt.." },
-    district: { type: String, default: "Quận 10" },
-    city: { type: String, default: "Ho Chi Minh" },
-    sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
-    accountType: {
-      type: String,
-      enum: ["Gia sư", "Học sinh"],
-      default: "Gia sư",
-    },
-    company: { type: String, max: 200, default: "Trường THPT Thủ Đức" },
-
-    typeOfTeaching: {
-      type: Number,
-      enum: ["Trực tuyến", "Tại Nhà", "Cả hai"],
-      default: 2,
-    },
-    phoneNumber: { type: Number },
-    teachingPrice: { type: Array, default: [] },
-    timeTable: { type: Array, default: [] },
-    certificate: { type: Array, default: [] },
-    bankCard: { type: Number },
+const SubjectSchema = new mongoose.Schema({
+  subject: {
+    type: String,
+    enum: ["Toán", "Lý", "Hóa", "Tiếng Anh", "Văn"],
+    default: "Tiếng Anh",
   },
-  { timestamps: true }
-);
+  class: {
+    type: String,
+    enum: [
+      "Lớp 1",
+      "Lớp 2",
+      "Lớp 3",
+      "Lớp 4",
+      "Lớp 5",
+      "Lớp 6",
+      "Lớp 7",
+      "Lớp 8",
+      "Lớp 8",
+      "Lớp 10",
+      "Lớp 11",
+      "Lớp 12",
+      "Ielts",
+      "Toiec",
+      "Khác",
+    ],
+    default: "Lớp 5",
+  },
+  picture: {
+    type: String,
+    default:
+      "https://i.pinimg.com/564x/9f/9e/8d/9f9e8dc7787fabf094581ce56e83647a.jpg",
+  },
+});
 module.exports = mongoose.model("Subject", SubjectSchema);

@@ -6,6 +6,9 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
+const subjectRoute = require("./routes/subject");
+// const priceRoute = require("./routes/priceBox");
+
 const cors = require("cors");
 
 dotenv.config();
@@ -24,6 +27,8 @@ app.get("/", (req, res) => {
 });
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/subject", subjectRoute);
+// app.use("/api/price", priceRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is ready, tina");

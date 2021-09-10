@@ -22,12 +22,17 @@ router.put("/:id", async (req, res) => {
   //     return res.status(500).json(err);
   //   }
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, {
-      $set: req.body,
-    });
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
 
     res.status(200).json(user);
   } catch (err) {
+    console.log(err);
     return res.status(500).json(err);
   }
   //   } else {
