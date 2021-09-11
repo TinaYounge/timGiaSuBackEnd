@@ -16,5 +16,7 @@ router.put("/:id/unfollow", userController.unfollowAUser);
 router.put("/:id/addClass", userController.addClassToUser);
 //Delete a class from user
 router.put("/:id/deleteClass", userController.deleteClassToUser);
+//Add schedule to user
+// router.put("/:id/addClass", userController.addClassToUser);
 
 module.exports = router;

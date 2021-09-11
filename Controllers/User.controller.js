@@ -143,4 +143,18 @@ userController.addClassToUser = async (req, res, next) => {
     return res.status(500).json(err);
   }
 };
+//Add schedule to user
+// userController.addScheduleToUser = async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.params.id);
+//     if (!user.classes.includes(req.body.classId)) {
+//       await user.updateOne({ $push: { timeTable: req.body.classId } });
+//       res.status(200).json("classId is added");
+//     } else {
+//       return res.status(401).json("class you already add before");
+//     }
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// };
 module.exports = userController;

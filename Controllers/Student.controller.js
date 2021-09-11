@@ -1,5 +1,6 @@
 const Student = require("../models/Student");
 const bcrypt = require("bcrypt");
+const User = require("../models/User");
 
 const studentController = {};
 
@@ -59,25 +60,26 @@ studentController.deleteStudent = async (req, res, next) => {
 studentController.getAStudent = async (req, res, next) => {
   try {
     const student = await Student.findById(req.params.id);
-    res.status(200).json(user);
+    res.status(200).json(student);
   } catch (err) {
     return res.status(500).json(err);
   }
 };
+
 //Follow a teacher from student
 studentController.followATeacherByStudent = async (req, res, next) => {
   if (req.body.userId !== req.params.id) {
     try {
       const student = await Student.findById(req.params.id);
-      const currentStudent = await Student.findById(req.body.userId);
+      const currentUser = await User.findById(req.body.userId);
       if (!student.followers.includes(req.body.userId)) {
         await student.updateOne({ $push: { followers: req.body.userId } });
-        await currentStudent.updateOne({
+        await currentUser.updateOne({
           $push: { followings: req.params.id },
         });
         res.status(200).json("user has been followed");
       } else {
-        return res.status(401).json("person you did follow");
+        return res.status(401).json("person you did follow before");
       }
     } catch (err) {
       return res.status(500).json(err);
@@ -91,15 +93,15 @@ studentController.unFollowATeacherByStudent = async (req, res, next) => {
   if (req.body.userId !== req.params.id) {
     try {
       const student = await Student.findById(req.params.id);
-      const currentStudent = await Student.findById(req.body.userId);
-      if (!student.followers.includes(req.body.userId)) {
+      const currentUser = await User.findById(req.body.userId);
+      if (student.followers.includes(req.body.userId)) {
         await student.updateOne({ $pull: { followers: req.body.userId } });
-        await currentStudent.updateOne({
+        await currentUser.updateOne({
           $pull: { followings: req.params.id },
         });
-        res.status(200).json("user has been followed");
+        res.status(200).json("user has been unfollowed");
       } else {
-        return res.status(401).json("person you did follow");
+        return res.status(401).json("person you did not followed before");
       }
     } catch (err) {
       return res.status(500).json(err);

@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
     accountType: {
       type: String,
-      enum: ["Gia sư", "Học sinh"],
+      enum: ["Gia sư"],
       default: "Gia sư",
     },
     company: { type: String, max: 200, default: "Trường THPT Thủ Đức" },
@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema(
     classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
     phoneNumber: { type: Number },
     timeTable: { type: Array, default: [] },
+    classIsBooked: { type: Array, default: [] },
     certificate: { type: Array, default: [] },
     bankCard: { type: Number },
     AdminChecked: {
