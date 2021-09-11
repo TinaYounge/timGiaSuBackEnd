@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const UserSchema = new mongoose.Schema(
+const StudentSchema = new mongoose.Schema(
   {
     username: { type: String, require: true, min: 3, max: 20, unique: true },
     fullname: { type: String, max: 30 },
@@ -9,32 +9,23 @@ const UserSchema = new mongoose.Schema(
     followers: { type: Array, default: [] },
     followings: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
-    desc: { type: String, max: 500, default: "Tôi là môt.." },
     district: { type: String, default: "Quận 10" },
     city: { type: String, default: "Ho Chi Minh" },
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
     accountType: {
       type: String,
-      enum: ["Gia sư", "Học sinh"],
-      default: "Gia sư",
+      enum: ["Học sinh"],
+      default: "Học sinh",
     },
-    company: { type: String, max: 200, default: "Trường THPT Thủ Đức" },
-    typeOfTeaching: {
+
+    typeOfStudying: {
       type: String,
       enum: ["Trực tuyến", "Tại Nhà", "Cả hai"],
       default: "Cả hai",
     },
-    classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
+    classesBooked: { type: Array, default: [] },
     phoneNumber: { type: Number },
-    timeTable: { type: Array, default: [] },
-    certificate: { type: Array, default: [] },
-    bankCard: { type: Number },
-    AdminChecked: {
-      type: String,
-      enum: ["Đạt", "Không đạt"],
-      default: "Đạt",
-    },
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("Student", StudentSchema);

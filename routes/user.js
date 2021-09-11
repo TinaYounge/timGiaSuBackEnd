@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
 const userController = require("../Controllers/User.controller");
 //Get all user
 router.get("/teachers", userController.getAllTeachers);
@@ -13,5 +12,9 @@ router.get("/:id", userController.getAUser);
 router.put("/:id/follow", userController.followAUser);
 //Unfollow a user
 router.put("/:id/unfollow", userController.unfollowAUser);
+//Add class to user
+router.put("/:id/addClass", userController.addClassToUser);
+//Delete a class from user
+router.put("/:id/deleteClass", userController.deleteClassToUser);
 
 module.exports = router;

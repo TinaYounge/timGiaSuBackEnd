@@ -1,27 +1,10 @@
 const router = require("express").Router();
-const Price = require("../models/Price");
+const priceController = require("../Controllers/Price.controller");
 
 //Get all Price
-router.get("/", async (req, res) => {
-  let allPrices = [];
-  try {
-    allPrices = await Price.find();
-    res.status(200).json(allPrices);
-  } catch (err) {
-    res.status(403).json("Cant get all prices");
-  }
-});
+router.get("/", priceController.getAllPrice);
 
-//Get a Price
-router.get("/:id", async (req, res) => {
-  let aPrice = [];
-  try {
-    aPrice = await Price.find({ _id: req.params.id });
-    res.status(200).json(aPrice);
-  } catch (err) {
-    res.status(403).json("Cant get a price");
-  }
-});
+// Get a Price
+router.get("/:id", priceController.getAPrice);
+
 module.exports = router;
-
-//Post a Price

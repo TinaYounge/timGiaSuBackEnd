@@ -4,8 +4,9 @@ const SubjectSchema = new mongoose.Schema({
     type: String,
     enum: ["Toán", "Lý", "Hóa", "Tiếng Anh", "Văn"],
     default: "Tiếng Anh",
+    require: true,
   },
-  class: {
+  grade: {
     type: String,
     enum: [
       "Lớp 1",
@@ -24,8 +25,14 @@ const SubjectSchema = new mongoose.Schema({
       "Toiec",
       "Khác",
     ],
+    require: true,
     default: "Lớp 5",
   },
+  // prices: [{ type: mongoose.Schema.Types.ObjectId, ref: "PriceBox" }],
+  price30: { type: Number, default: 30000, require: true },
+  price50: { type: Number, default: 100000, require: true },
+  price5X50: { type: Number, default: 450000, require: true },
+  price10x50: { type: Number, default: 4000000, require: true },
   picture: {
     type: String,
     default:

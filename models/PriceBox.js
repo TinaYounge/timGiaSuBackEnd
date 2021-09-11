@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
-const PriceSchema = new mongoose.Schema({
-  Time: {
+const PriceBoxSchema = new mongoose.Schema({
+  time: {
     type: String,
-    enum: [
-      "1 X 30 phút",
-      "1 X 50 phút",
-      "5 X 50 phút",
-      "10 X 50 phút",
-      "20 X 50 phút",
-    ],
-    default: "Tiếng Anh",
+    enum: ["30 phút", "50 phút"],
+    default: "30 phút",
   },
-  class: {
+  numberOfLesson: {
     type: Number,
-    default: 20000,
+    enum: [1, 5, 10, 15, 20],
+    default: 1,
+  },
+  price: {
+    type: Number,
+    default: 60000,
   },
 });
-module.exports = mongoose.model("Price", PriceSchema);
+
+module.exports = mongoose.model("PriceBox", PriceBoxSchema);
