@@ -2,11 +2,52 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 const userController = {};
+function paginationResult(model) {
+  return async (req, res, next) => {
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    if (endIndex < model.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+    results.results = model.slice(startIndex, endIndex);
+    res.paginationResult = results;
+    next();
+  };
+}
 //Get all teachers
 userController.getAllTeachers = async (req, res, next) => {
-  let allTeacher = [];
+  // const page = parseInt(req.query.page);
+  //   const limit = parseInt(req.query.limit);
+  //   const startIndex = (page - 1) * limit;
+  //   const endIndex = page * limit;
+  //   const results = {};
+  //   if (endIndex < model.length) {
+  //     results.next = {
+  //       page: page + 1,
+  //       limit: limit,
+  //     };
+  //   }
+  //   if (startIndex > 0) {
+  //     results.previous = {
+  //       page: page - 1,
+  //       limit: limit,
+  //     };
+  //   }
+  //   results.results = model.slice(startIndex, endIndex);
   try {
-    allTeacher = await User.find({ accountType: "Gia sư" });
+    const allTeacher = await User.find({ accountType: "Gia sư" });
     res.status(200).json(allTeacher);
   } catch (err) {
     res.status(403).json("Cant get all user");
@@ -143,18 +184,21 @@ userController.addClassToUser = async (req, res, next) => {
     return res.status(500).json(err);
   }
 };
-//Add schedule to user
-// userController.addScheduleToUser = async (req, res, next) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     if (!user.classes.includes(req.body.classId)) {
-//       await user.updateOne({ $push: { timeTable: req.body.classId } });
-//       res.status(200).json("classId is added");
-//     } else {
-//       return res.status(401).json("class you already add before");
-//     }
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// };
+//Add AvailableTime to user
+userController.addAvailableTime = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user.availableTime.includes(req.body.availableTimeId)) {
+      await user.updateOne({
+        $push: { availableTime: req.body.availableTimeId },
+      });
+      res.status(200).json("AvailableUserTimeId is added");
+    } else {
+      return res.status(401).json("AvailableUserTimeId you already add before");
+    }
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
 module.exports = userController;

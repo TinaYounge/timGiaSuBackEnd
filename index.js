@@ -10,6 +10,8 @@ const studentRoute = require("./routes/student");
 const authStudentRoute = require("./routes/auth.student");
 const subjectRoute = require("./routes/subject");
 const priceRoute = require("./routes/priceBox");
+const availableTimeRoute = require("./routes/availableTime");
+const classIsBookedRoute = require("./routes/classIsBooked");
 const cors = require("cors");
 
 dotenv.config();
@@ -32,6 +34,8 @@ app.use("/api/auth", authRoute);
 app.use("/api/studentAuth", authStudentRoute);
 app.use("/api/subject", subjectRoute);
 app.use("/api/price", priceRoute);
+app.use("/api/availableTime", availableTimeRoute);
+app.use("/api/classIsBooked", classIsBookedRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is ready, tina");

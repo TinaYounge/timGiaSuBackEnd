@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userController = require("../Controllers/User.controller");
+
 //Get all user
 router.get("/teachers", userController.getAllTeachers);
 //Update user
@@ -16,7 +17,7 @@ router.put("/:id/unfollow", userController.unfollowAUser);
 router.put("/:id/addClass", userController.addClassToUser);
 //Delete a class from user
 router.put("/:id/deleteClass", userController.deleteClassToUser);
-//Add schedule to user
-// router.put("/:id/addClass", userController.addClassToUser);
+//Add addAvailableTime to user
+router.put("/:id/addAvailableTime", userController.addAvailableTime);
 
 module.exports = router;

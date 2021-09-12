@@ -13,11 +13,21 @@ const UserSchema = new mongoose.Schema(
     district: { type: String, default: "Quận 10" },
     city: { type: String, default: "Ho Chi Minh" },
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
+    birthday: { type: Object },
     accountType: {
       type: String,
       enum: ["Gia sư"],
       default: "Gia sư",
     },
+    highestCertificate: {
+      type: String,
+      enum: ["Cao đẳng", "Đại học", "Thạc sĩ", "Tiến sĩ"],
+    },
+    universityGotCert: {
+      type: String,
+      max: 200,
+    },
+
     company: { type: String, max: 200, default: "Trường THPT Thủ Đức" },
     typeOfTeaching: {
       type: String,
@@ -26,8 +36,15 @@ const UserSchema = new mongoose.Schema(
     },
     classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
     phoneNumber: { type: Number },
-    timeTable: { type: Array, default: [] },
-    classIsBooked: { type: Array, default: [] },
+    //availableTime can not populate? dont know why
+    availableTime: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "AvailableUserTime" },
+    ],
+    classIsBooked: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "ClassIsBooked" },
+    ],
+
+    // classIsBooked: { type: Array, default: [] },
     certificate: { type: Array, default: [] },
     bankCard: { type: Number },
     AdminChecked: {
@@ -35,6 +52,7 @@ const UserSchema = new mongoose.Schema(
       enum: ["Đạt", "Không đạt"],
       default: "Đạt",
     },
+    dayCreated: { type: Array },
   },
   { timestamps: true }
 );
