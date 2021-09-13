@@ -2,53 +2,48 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
 const userController = {};
-function paginationResult(model) {
-  return async (req, res, next) => {
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const results = {};
-    if (endIndex < model.length) {
-      results.next = {
-        page: page + 1,
-        limit: limit,
-      };
-    }
-    if (startIndex > 0) {
-      results.previous = {
-        page: page - 1,
-        limit: limit,
-      };
-    }
-    results.results = model.slice(startIndex, endIndex);
-    res.paginationResult = results;
-    next();
-  };
-}
+// function paginationResult(model) {
+//   return async (req, res, next) => {
+//     const page = parseInt(req.query.page);
+//     const limit = parseInt(req.query.limit);
+//     const startIndex = (page - 1) * limit;
+//     const endIndex = page * limit;
+//     const results = {};
+//     if (endIndex < model.length) {
+//       results.next = {
+//         page: page + 1,
+//         limit: limit,
+//       };
+//     }
+//     if (startIndex > 0) {
+//       results.previous = {
+//         page: page - 1,
+//         limit: limit,
+//       };
+//     }
+//     results.results = model.slice(startIndex, endIndex);
+//     res.paginationResult = results;
+//     next();
+//   };
+// }
 //Get all teachers
 userController.getAllTeachers = async (req, res, next) => {
-  // const page = parseInt(req.query.page);
-  //   const limit = parseInt(req.query.limit);
-  //   const startIndex = (page - 1) * limit;
-  //   const endIndex = page * limit;
-  //   const results = {};
-  //   if (endIndex < model.length) {
-  //     results.next = {
-  //       page: page + 1,
-  //       limit: limit,
-  //     };
-  //   }
-  //   if (startIndex > 0) {
-  //     results.previous = {
-  //       page: page - 1,
-  //       limit: limit,
-  //     };
-  //   }
-  //   results.results = model.slice(startIndex, endIndex);
+  let { page, limit } = req.query;
+  console.log("page", page);
+  console.log("limit", limit);
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 8;
+  }
+  page = parseInt(page);
+  limit = parseInt(limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
   try {
     const allTeacher = await User.find({ accountType: "Gia sư" });
-    res.status(200).json(allTeacher);
+    res.status(200).json(allTeacher.slice(startIndex, endIndex));
   } catch (err) {
     res.status(403).json("Cant get all user");
   }
@@ -109,7 +104,9 @@ userController.deleteUser = async (req, res, next) => {
 //Get a user
 userController.getAUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id).populate("classes");
+    const user = await User.findById(req.params.id)
+      .populate("classes")
+      .populate("availableTime");
     res.status(200).json(user);
   } catch (err) {
     return res.status(500).json(err);
