@@ -1,4 +1,4 @@
-const faker = require("faker");
+const faker = require("faker/locale/vi");
 const MongoClient = require("mongodb").MongoClient;
 // const mongoose = require("mongoose");
 
@@ -9,7 +9,7 @@ function randomIntFromInterval(min, max) {
 
 async function seedDB() {
   // Connection URL
-  const uri = "mongodb://localhost:27017/timGiaSu";
+  const uri = "mongodb://localhost:27017/";
 
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -23,7 +23,7 @@ async function seedDB() {
     // });
     console.log("Connected correctly to server");
 
-    const collection = client.db("iot").collection("kitty-litter-time-series");
+    const collection = client.db("timGiaSu").collection("TestUser");
 
     // The drop() command destroys all data from a collection.
     // Make sure you run it against proper database and collection.
@@ -32,18 +32,62 @@ async function seedDB() {
     // make a bunch of time series data
     let timeSeriesData = [];
 
-    for (let i = 0; i < 5000; i++) {
-      const firstName = faker.name.firstName();
-      const lastName = faker.name.lastName();
+    for (let i = 0; i < 50; i++) {
+      const username = faker.internet.userName();
+      const fullname = faker.name.findName();
+      const email = faker.internet.email(fullname);
+      const password = faker.internet.email();
+      const profilePicture = faker.image.avatar();
+      const followers = [];
+      const followings = [];
+      const isAdmin = false;
+      const desc = faker.lorem.paragraphs();
+      const district = "Quận 1";
+      const city = "Hồ Chí Minh";
+      const sex = "Nữ";
+      const birthday = "";
+      const accountType = "Gia sư";
+      const highestCertificate = "Đại học";
+      const universityGotCert = "Đại học Sư phạm Thành Phố HCM";
+      const company = faker.company.companyName();
+      const typeOfTeaching = "Cả hai";
+      const classes = [];
+      const phoneNumber = faker.phone.phoneNumber();
+      const availableTime = [];
+      const classIsBooked = [];
+      const vote = [];
+      const certificate = [];
+      const bankCard = faker.finance.creditCardNumber();
+      const AdminChecked = "Đạt";
+
       let newDay = {
         timestamp_day: faker.date.past(),
-        cat: faker.random.word(),
-        owner: {
-          email: faker.internet.email(firstName, lastName),
-          firstName,
-          lastName,
-        },
-        events: [],
+        username,
+        email,
+        password,
+        profilePicture,
+        followers,
+        followings,
+        isAdmin,
+        desc,
+        district,
+        city,
+        city,
+        sex,
+        birthday,
+        accountType,
+        highestCertificate,
+        universityGotCert,
+        company,
+        typeOfTeaching,
+        classes,
+        phoneNumber,
+        availableTime,
+        classIsBooked,
+        vote,
+        certificate,
+        bankCard,
+        AdminChecked,
       };
 
       for (let j = 0; j < randomIntFromInterval(1, 6); j++) {
@@ -51,11 +95,10 @@ async function seedDB() {
           timestamp_event: faker.date.past(),
           weight: randomIntFromInterval(14, 16),
         };
-        newDay.events.push(newEvent);
       }
       timeSeriesData.push(newDay);
     }
-    collection.insertMany(timeSeriesData);
+    await collection.insertMany(timeSeriesData);
 
     console.log("Database seeded! :)");
     client.close();

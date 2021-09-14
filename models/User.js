@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
     district: { type: String, default: "Quận 10" },
     city: { type: String, default: "Ho Chi Minh" },
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
-    birthday: { type: Object },
+    birthday: { type: String },
     accountType: {
       type: String,
       enum: ["Gia sư"],
@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema(
     classIsBooked: [
       { type: mongoose.Schema.Types.ObjectId, ref: "ClassIsBooked" },
     ],
-
+    vote: { type: Array, default: [] },
     // classIsBooked: { type: Array, default: [] },
     certificate: { type: Array, default: [] },
     bankCard: { type: Number },
