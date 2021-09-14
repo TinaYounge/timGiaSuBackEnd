@@ -5,7 +5,10 @@ const UserSchema = new mongoose.Schema(
     fullname: { type: String, max: 30 },
     email: { type: String, require: true, max: 50, unique: true },
     password: { type: String, required: true, min: 6 },
-    profilePicture: { type: String, default: "" },
+    profilePicture: {
+      type: String,
+      default: "https://dummyimage.com/268x180/786978/2a2c40&text=Timgiasu",
+    },
     followers: { type: Array, default: [] },
     followings: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
