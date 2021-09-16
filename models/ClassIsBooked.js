@@ -8,8 +8,9 @@ const ClassIsBookedSchema = new mongoose.Schema({
   finished: { type: String, enum: ["Yes", "No"] },
   typeOfTeaching: { type: String, enum: ["Online", "Offline"] },
   billId: { type: String },
-  reviewfromTeacher: { type: String },
-  teacherisPaied: { type: String, enum: ["Yes", "No"] },
+  reviewFromTeacher: { type: String },
+  teacherAccept: { type: String, enum: ["Yes", "No"] },
+  teacherIsPay: { type: String, enum: ["Yes", "No"] },
 });
 
 module.exports = mongoose.model("ClassIsBooked", ClassIsBookedSchema);

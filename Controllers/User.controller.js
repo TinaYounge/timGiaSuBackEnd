@@ -26,11 +26,10 @@ const userController = {};
 //     next();
 //   };
 // }
-//Get all teachers
+// Get all teachers
 userController.getAllTeachers = async (req, res, next) => {
   let { page, limit } = req.query;
-  console.log("page", page);
-  console.log("limit", limit);
+
   if (!page) {
     page = 1;
   }
@@ -42,13 +41,87 @@ userController.getAllTeachers = async (req, res, next) => {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   try {
-    const allTeacher = await User.find({ accountType: "Gia sư" });
+    const allTeacher = await User.find({
+      accountType: "Gia sư",
+    });
     res.status(200).json(allTeacher.slice(startIndex, endIndex));
   } catch (err) {
     res.status(403).json("Cant get all user");
   }
 };
 
+//Search filter users
+userController.searchFilterUser = async (req, res, next) => {
+  let { page, limit, cityFilter, typeOfTeachingFilter } = req.query;
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 8;
+  }
+  page = parseInt(page);
+  limit = parseInt(limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  if ((typeOfTeachingFilter = "Cả hai")) {
+    try {
+      const allTeacher = await User.find({
+        city: cityFilter,
+      });
+      res.status(200).json(allTeacher.slice(startIndex, endIndex));
+    } catch (err) {
+      res.status(403).json("Check");
+    }
+  }
+
+  try {
+    const allTeacher = await User.find({
+      city: cityFilter,
+      typeOfTeaching: typeOfTeachingFilter,
+    });
+    res.status(200).json(allTeacher.slice(startIndex, endIndex));
+  } catch (err) {
+    res.status(403).json("Cant get all user");
+  }
+};
+//Get favorite Users
+userController.favoriteUsers = async (req, res, next) => {
+  let { page, limit } = req.query;
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 8;
+  }
+  page = parseInt(page);
+  limit = parseInt(limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  console.log("hahah");
+
+  try {
+    const favUser = await User.aggregate([
+      {
+        $project: {
+          avgScore: {
+            $avg: "$vote",
+          },
+          fullname: "$fullname",
+          profilePicture: "$profilePicture",
+        },
+      },
+      {
+        $sort: {
+          avgScore: -1,
+        },
+      },
+    ]);
+    res.status(200).json(favUser.slice(startIndex, endIndex));
+  } catch (err) {
+    console.log("err", err);
+    res.status(403).json(err);
+  }
+};
 //Update a user
 userController.updateUser = async (req, res, next) => {
   // if (req.body.userId === req.params.id || req.body.isAdmin) {
@@ -78,7 +151,9 @@ userController.updateUser = async (req, res, next) => {
   //   }
   // }
 };
+
 //Delete a user
+
 userController.deleteUser = async (req, res, next) => {
   if (req.body.userId === req.params.id || req.body.isAdmin === "true") {
     if (req.body.password) {
@@ -105,8 +180,9 @@ userController.deleteUser = async (req, res, next) => {
 userController.getAUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
-      .populate("classes")
-      .populate("availableTime");
+      .populate("availableTime")
+      .populate("classIsBooked")
+      .populate("classes");
     res.status(200).json(user);
   } catch (err) {
     return res.status(500).json(err);

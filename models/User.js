@@ -4,6 +4,7 @@ const UserSchema = new mongoose.Schema(
     username: { type: String, require: true, min: 3, max: 20, unique: true },
     fullname: { type: String, max: 30 },
     email: { type: String, require: true, max: 50, unique: true },
+    prePassWord: { type: String },
     password: { type: String, required: true, min: 6 },
     profilePicture: {
       type: String,
@@ -38,6 +39,8 @@ const UserSchema = new mongoose.Schema(
       default: "Cả hai",
     },
     classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
+    // classes: { type: Array, default: [] },
+
     phoneNumber: { type: Number },
     //availableTime can not populate? dont know why
     availableTime: [
@@ -59,4 +62,4 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("TestUser", UserSchema);

@@ -3,6 +3,8 @@ const subjectController = require("../Controllers/Subject.controller");
 
 //Get all subject
 router.get("/", subjectController.getAllSubjects);
+//Get filter subject
+router.get("/getFilterSubjects", subjectController.getFilterSubjects);
 
 //Get a subject
 router.get("/:id", subjectController.getASubject);

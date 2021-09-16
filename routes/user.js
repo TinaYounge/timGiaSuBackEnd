@@ -1,8 +1,12 @@
 const router = require("express").Router();
 const userController = require("../Controllers/User.controller");
 
+//Search filter users
+router.get("/searchFilterUser", userController.searchFilterUser);
 //Get all user
 router.get("/teachers", userController.getAllTeachers);
+//Get favorite Users
+router.get("/favoriteUsers", userController.favoriteUsers);
 //Update user
 router.put("/:id", userController.updateUser);
 //Delete user

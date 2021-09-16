@@ -17,13 +17,37 @@ subjectController.getASubject = async (req, res, next) => {
   let aSubject = [];
   try {
     // aSubject = await Subject.find({ _id: req.params.id });
-    aSubject = await Subject.find({ _id: req.params.id }).populate("classes");
+    aSubject = await Subject.find({ _id: req.params.id });
     res.status(200).json(aSubject);
   } catch (err) {
     res.status(403).json("Cant get a subject");
   }
 };
 
+//Get filter subjects
+subjectController.getFilterSubjects = async (req, res, next) => {
+  let { page, limit, subjectFilter } = req.query;
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 8;
+  }
+  page = parseInt(page);
+  limit = parseInt(limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  let allSubjects = [];
+  try {
+    allSubjects = await Subject.aggregate([
+      { $match: { subject: subjectFilter } },
+    ]);
+    res.status(200).json(allSubjects.slice(startIndex, endIndex));
+  } catch (err) {
+    console.log("rer", err);
+    res.status(403).json("Cant get all subjects");
+  }
+};
 //Add a subject(class)
 subjectController.addASubject = async (req, res, next) => {
   try {
