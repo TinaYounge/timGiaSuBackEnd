@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const ClassIsBookedSchema = new mongoose.Schema({
-  timeId: { type: String },
+  // timeId: { type: String },
+  time: {
+    startAt: { type: Date },
+    endAt: { type: Date },
+  },
   // classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
   classId: { type: String },
   userId: { type: String },

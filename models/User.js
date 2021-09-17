@@ -52,7 +52,7 @@ const UserSchema = new mongoose.Schema(
     vote: { type: Array, default: [] },
     // classIsBooked: { type: Array, default: [] },
     certificate: { type: Array, default: [] },
-    bankCard: { type: Number },
+    bankCard: { type: String },
     AdminChecked: {
       type: String,
       enum: ["Đạt", "Không đạt"],

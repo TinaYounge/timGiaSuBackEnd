@@ -122,6 +122,7 @@ userController.favoriteUsers = async (req, res, next) => {
     res.status(403).json(err);
   }
 };
+
 //Update a user
 userController.updateUser = async (req, res, next) => {
   // if (req.body.userId === req.params.id || req.body.isAdmin) {

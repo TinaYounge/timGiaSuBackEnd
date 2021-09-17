@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 const authController = {};
 
 //Register
@@ -39,7 +39,16 @@ authController.login = async (req, res, next) => {
       user.password
     );
     if (validPassword) {
-      res.status(200).json(user);
+      const accessToken = jwt.sign(
+        {
+          id: user._id,
+          isAdmin: user.isAdmin,
+          accountType: user.accountType,
+        },
+        process.env.JWC_SEC,
+        { expiresIn: "3d" }
+      );
+      res.status(200).json({ ...user.toObject(), accessToken });
     } else {
       res.status(404).json("Password is not right");
     }

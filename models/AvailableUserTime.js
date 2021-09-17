@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const AvailableUserTimeSchema = new mongoose.Schema({
-    day: { type: String}
+  // day: { type: String },
+  // time: { type: String },
+  day: [{ time: { type: String } }],
   // time: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeInADay" }],
 });
 

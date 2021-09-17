@@ -26,7 +26,7 @@ subjectController.getASubject = async (req, res, next) => {
 
 //Get filter subjects
 subjectController.getFilterSubjects = async (req, res, next) => {
-  let { page, limit, subjectFilter } = req.query;
+  let { page, limit, subjectFilter} = req.query;
   if (!page) {
     page = 1;
   }
@@ -40,7 +40,7 @@ subjectController.getFilterSubjects = async (req, res, next) => {
   let allSubjects = [];
   try {
     allSubjects = await Subject.aggregate([
-      { $match: { subject: subjectFilter } },
+      { $match:{ $and:[{ subject: subjectFilter }] }},
     ]);
     res.status(200).json(allSubjects.slice(startIndex, endIndex));
   } catch (err) {

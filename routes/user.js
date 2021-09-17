@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userController = require("../Controllers/User.controller");
+const { verifyToken, verifyTokenAndAuthorization } = require("./verifyToken");
 
 //Search filter users
 router.get("/searchFilterUser", userController.searchFilterUser);
@@ -8,7 +9,7 @@ router.get("/teachers", userController.getAllTeachers);
 //Get favorite Users
 router.get("/favoriteUsers", userController.favoriteUsers);
 //Update user
-router.put("/:id", userController.updateUser);
+router.put("/:id", verifyTokenAndAuthorization, userController.updateUser);
 //Delete user
 router.delete("/:id", userController.deleteUser);
 //Get a user
