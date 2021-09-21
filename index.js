@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+dotenv.config();
 const helmet = require("helmet");
 const morgan = require("morgan");
 const userRoute = require("./routes/user");
@@ -12,9 +13,10 @@ const subjectRoute = require("./routes/subject");
 const priceRoute = require("./routes/priceBox");
 const availableTimeRoute = require("./routes/availableTime");
 const classIsBookedRoute = require("./routes/classIsBooked");
-const cors = require("cors");
+const moment = require("moment"); // require
+moment().format();
 
-dotenv.config();
+const cors = require("cors");
 
 mongoose.connect(process.env.MONGO_URL, () => {
   console.log("mongodb connected");

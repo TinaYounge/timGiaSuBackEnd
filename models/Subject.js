@@ -13,6 +13,7 @@ const SubjectSchema = new mongoose.Schema({
       "Piano",
       "Hát nhạc",
       "Hội họa",
+      "Tiếng Pháp",
     ],
     default: "Tiếng Anh",
     require: true,
@@ -39,11 +40,11 @@ const SubjectSchema = new mongoose.Schema({
     require: true,
     default: "Lớp 5",
   },
-  // prices: [{ type: mongoose.Schema.Types.ObjectId, ref: "PriceBox" }],
-  package: [{ id: { type: String }, value: { type: Number } }],
-  price30: { type: Number, default: 30000, require: true },
-  price50: { type: Number, default: 100000, require: true },
-  price5X50: { type: Number, default: 450000, require: true },
-  price10x50: { type: Number, default: 4000000, require: true },
+  fullPackage: [
+    {
+      idPrice: { type: String, enum: ["30", "50", "5x50", "10x50"] },
+      value: { type: Number },
+    },
+  ],
 });
 module.exports = mongoose.model("Subject", SubjectSchema);

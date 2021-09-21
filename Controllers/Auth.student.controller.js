@@ -1,6 +1,6 @@
 const Student = require("../models/Student");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 const authStudentController = {};
 
 //Register
@@ -24,6 +24,51 @@ authStudentController.register = async (req, res, next) => {
   }
 };
 
+//Get Login Me
+authStudentController.loginMe = async (req, res, next) => {
+  try {
+    let id = req.user.id;
+    const student = await Student.findById(id);
+    res.status(200).json(student);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// //Login
+// authController.login = async (req, res, next) => {
+//   try {
+//     //check email
+//     const user = await User.findOne({
+//       email: req.body.email,
+//     });
+//     !user && res.status(404).json("user not found");
+
+//     //check password
+
+//     const validPassword = await bcrypt.compare(
+//       req.body.password,
+//       user.password
+//     );
+//     if (validPassword) {
+//       const accessToken = jwt.sign(
+//         {
+//           id: user._id,
+//           isAdmin: user.isAdmin,
+//           accountType: user.accountType,
+//         },
+//         process.env.JWT_SEC,
+//         { expiresIn: "10d" }
+//       );
+//       res.status(200).json({ ...user.toObject(), accessToken });
+//     } else {
+//       res.status(404).json("Password is not right");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
 //Login
 authStudentController.login = async (req, res, next) => {
   try {
@@ -39,7 +84,16 @@ authStudentController.login = async (req, res, next) => {
       user.password
     );
     if (validPassword) {
-      res.status(200).json(user);
+      const accessToken = jwt.sign(
+        {
+          id: user._id,
+          isAdmin: user.isAdmin,
+          accountType: user.accountType,
+        },
+        process.env.JWT_SEC,
+        { expiresIn: "10d" }
+      );
+      res.status(200).json({ ...user.toObject(), accessToken });
     } else {
       res.status(404).json("Password is not right");
     }

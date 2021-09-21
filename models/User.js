@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false },
     desc: { type: String, max: 500, default: "Tôi là môt.." },
     district: { type: String, default: "Quận 10" },
-    city: { type: String, default: "Ho Chi Minh" },
+    city: { type: String, default: "Hồ Chi Minh" },
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
     birthday: { type: String },
     accountType: {

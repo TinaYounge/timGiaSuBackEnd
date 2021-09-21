@@ -70,7 +70,7 @@ userController.searchFilterUser = async (req, res, next) => {
       });
       res.status(200).json(allTeacher.slice(startIndex, endIndex));
     } catch (err) {
-      res.status(403).json("Check");
+      res.status(403).json(err);
     }
   }
 
@@ -97,7 +97,6 @@ userController.favoriteUsers = async (req, res, next) => {
   limit = parseInt(limit);
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  console.log("hahah");
 
   try {
     const favUser = await User.aggregate([
@@ -108,6 +107,8 @@ userController.favoriteUsers = async (req, res, next) => {
           },
           fullname: "$fullname",
           profilePicture: "$profilePicture",
+          desc: "$desc",
+          city: "$city",
         },
       },
       {
@@ -118,21 +119,12 @@ userController.favoriteUsers = async (req, res, next) => {
     ]);
     res.status(200).json(favUser.slice(startIndex, endIndex));
   } catch (err) {
-    console.log("err", err);
     res.status(403).json(err);
   }
 };
 
 //Update a user
 userController.updateUser = async (req, res, next) => {
-  // if (req.body.userId === req.params.id || req.body.isAdmin) {
-  // if (req.body.password) {
-  //   try {
-  //     const salt = await bcrypt.genSalt(10);
-  //     req.body.password = await bcrypt.hash(req.body.password, salt);
-  //   } catch (err) {
-  //     return res.status(500).json(err);
-  //   }
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
@@ -147,10 +139,6 @@ userController.updateUser = async (req, res, next) => {
     console.log(err);
     return res.status(500).json(err);
   }
-  //   } else {
-  //     return res.status(403).json("you can update only on your account");
-  //   }
-  // }
 };
 
 //Delete a user
@@ -184,7 +172,65 @@ userController.getAUser = async (req, res, next) => {
       .populate("availableTime")
       .populate("classIsBooked")
       .populate("classes");
+
     res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+//Get Filter User
+userController.getFilterUser = async (req, res, next) => {
+  let { page, limit, cityFilter, typeOfTeachingFilter, subjectFilter } =
+    req.query;
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 8;
+  }
+  page = parseInt(page);
+  limit = parseInt(limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  let allUsers = [];
+  try {
+    if ((cityFilter, typeOfTeachingFilter)) {
+      allUsers = await User.aggregate([
+        {
+          $match: {
+            $and: [
+              { city: cityFilter },
+              { typeOfTeaching: typeOfTeachingFilter },
+              // { class: { subject: subjectFilter } },
+            ],
+          },
+        },
+      ]);
+    } else if (cityFilter && !typeOfTeachingFilter) {
+      allUsers = await User.aggregate([
+        {
+          $match: {
+            $and: [
+              { city: cityFilter },
+              // { class: { subject: subjectFilter } },
+            ],
+          },
+        },
+      ]);
+    } else if (typeOfTeachingFilter && !cityFilter) {
+      allUsers = await User.aggregate([
+        {
+          $match: {
+            $and: [
+              { city: cityFilter },
+              // { class: { subject: subjectFilter } },
+            ],
+          },
+        },
+      ]);
+    }
+    res.status(200).json(allUsers.slice(startIndex, endIndex));
   } catch (err) {
     return res.status(500).json(err);
   }

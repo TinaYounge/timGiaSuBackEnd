@@ -32,6 +32,7 @@ authController.login = async (req, res, next) => {
       email: req.body.email,
     });
     !user && res.status(404).json("user not found");
+
     //check password
 
     const validPassword = await bcrypt.compare(
@@ -45,8 +46,8 @@ authController.login = async (req, res, next) => {
           isAdmin: user.isAdmin,
           accountType: user.accountType,
         },
-        process.env.JWC_SEC,
-        { expiresIn: "3d" }
+        process.env.JWT_SEC,
+        { expiresIn: "10d" }
       );
       res.status(200).json({ ...user.toObject(), accessToken });
     } else {

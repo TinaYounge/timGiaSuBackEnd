@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const userController = require("../Controllers/User.controller");
-const { verifyToken, verifyTokenAndAuthorization } = require("./verifyToken");
+const { verifyTokenAndAuthorization } = require("./verifyToken");
 
 //Search filter users
 router.get("/searchFilterUser", userController.searchFilterUser);
@@ -8,21 +8,35 @@ router.get("/searchFilterUser", userController.searchFilterUser);
 router.get("/teachers", userController.getAllTeachers);
 //Get favorite Users
 router.get("/favoriteUsers", userController.favoriteUsers);
+//Get filter user
+router.get("/getFilterUser", userController.getFilterUser);
 //Update user
-router.put("/:id", verifyTokenAndAuthorization, userController.updateUser);
+router.put("/:id", userController.updateUser);
 //Delete user
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", verifyTokenAndAuthorization, userController.deleteUser);
 //Get a user
 router.get("/:id", userController.getAUser);
-//Follow a user
-router.put("/:id/follow", userController.followAUser);
+
+router.put(
+  "/:id/follow",
+  verifyTokenAndAuthorization,
+  userController.followAUser
+);
 //Unfollow a user
-router.put("/:id/unfollow", userController.unfollowAUser);
+router.put(
+  "/:id/unfollow",
+  verifyTokenAndAuthorization,
+  userController.unfollowAUser
+);
 //Add class to user
 router.put("/:id/addClass", userController.addClassToUser);
 //Delete a class from user
 router.put("/:id/deleteClass", userController.deleteClassToUser);
 //Add addAvailableTime to user
-router.put("/:id/addAvailableTime", userController.addAvailableTime);
+router.put(
+  "/:id/addAvailableTime",
+  verifyTokenAndAuthorization,
+  userController.addAvailableTime
+);
 
 module.exports = router;

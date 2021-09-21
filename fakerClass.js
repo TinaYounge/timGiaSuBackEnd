@@ -15,7 +15,7 @@ async function seedDB() {
 
     console.log("Connected correctly to server");
 
-    const collection = client.db("timGiaSu").collection("testClass2");
+    const collection = client.db("timGiaSu").collection("testClass4");
 
     // The drop() command destroys all data from a collection.
     // Make sure you run it against proper database and collection.
@@ -120,7 +120,8 @@ async function seedDB() {
       "61418a4de2a57953c8eb99ee",
       "61418a4de2a57953c8eb99ef",
     ];
-    for (let i = 0; i < 500; i++) {
+    // let idPriceAll = ["30", "50", "5x50", "10x50"];
+    for (let i = 0; i < 100; i++) {
       const userId = userIdAll[Math.floor(Math.random() * userIdAll.length)];
       const subject = subjectAll[Math.floor(Math.random() * subjectAll.length)];
       const grade = gradeAll[Math.floor(Math.random() * gradeAll.length)];
@@ -130,15 +131,19 @@ async function seedDB() {
         price5X50All[Math.floor(Math.random() * price5X50All.length)];
       const price10x50 =
         price10x50All[Math.floor(Math.random() * price10x50All.length)];
+      // const idPrice = idPriceAll[Math.floor(Math.random() * idPriceAll.length)];
 
       let newDay = {
         timestamp_day: faker.date.past(),
         userId,
         subject,
         grade,
-        price30,
-        price50,
-        price5X50,
+        fullPackage: [
+          { idPice: "30", value: price30 },
+          { idPice: "50", value: price50 },
+          { idPice: "5x50", value: price5X50 },
+          { idPice: "10x50", value: price10x50 },
+        ],
       };
 
       timeSeriesData.push(newDay);
