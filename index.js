@@ -13,6 +13,7 @@ const subjectRoute = require("./routes/subject");
 const priceRoute = require("./routes/priceBox");
 const availableTimeRoute = require("./routes/availableTime");
 const classIsBookedRoute = require("./routes/classIsBooked");
+const cartRoute = require("./routes/cart");
 const moment = require("moment"); // require
 moment().format();
 
@@ -38,6 +39,7 @@ app.use("/api/subject", subjectRoute);
 app.use("/api/price", priceRoute);
 app.use("/api/availableTime", availableTimeRoute);
 app.use("/api/classIsBooked", classIsBookedRoute);
+app.use("/api/cartOfStudent", cartRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is ready, tina");

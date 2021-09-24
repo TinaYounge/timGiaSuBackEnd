@@ -33,10 +33,6 @@ router.put("/:id/addClass", userController.addClassToUser);
 //Delete a class from user
 router.put("/:id/deleteClass", userController.deleteClassToUser);
 //Add addAvailableTime to user
-router.put(
-  "/:id/addAvailableTime",
-  verifyTokenAndAuthorization,
-  userController.addAvailableTime
-);
+router.put("/:id/addAvailableTime", userController.addAvailableTime);
 
 module.exports = router;

@@ -17,12 +17,11 @@ availableUserTimeController.getAllAvailableUserTimes = async (
 };
 //Get a AvailableUserTime
 availableUserTimeController.getAAvailableUserTime = async (req, res, next) => {
-  let aAvailableUserTime = [];
   try {
     // aAvailableUserTime = await AvailableUserTime.find({ _id: req.params.id });
-    aAvailableUserTime = await AvailableUserTime.find({
+    let aAvailableUserTime = await AvailableUserTime.find({
       _id: req.params.id,
-    }).populate("availableTime");
+    });
     res.status(200).json(aAvailableUserTime);
   } catch (err) {
     res.status(403).json("Cant get a AvailableUserTime");

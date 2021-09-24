@@ -1,6 +1,7 @@
 const Student = require("../models/Student");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Cart = require("../models/Cart");
 
 const studentController = {};
 
@@ -59,7 +60,7 @@ studentController.deleteStudent = async (req, res, next) => {
 //Get a student
 studentController.getAStudent = async (req, res, next) => {
   try {
-    const student = await Student.findById(req.params.id);
+    const student = await Student.findById(req.params.id).populate("cart");
     res.status(200).json(student);
   } catch (err) {
     return res.status(500).json(err);
@@ -68,14 +69,15 @@ studentController.getAStudent = async (req, res, next) => {
 
 //Follow a teacher from student
 studentController.followATeacherByStudent = async (req, res, next) => {
-  if (req.body.userId !== req.params.id) {
+  const id = req.user.id;
+  if (req.body.userId !== id) {
     try {
-      const student = await Student.findById(req.params.id);
+      const student = await Student.findById(id);
       const currentUser = await User.findById(req.body.userId);
       if (!student.followers.includes(req.body.userId)) {
         await student.updateOne({ $push: { followers: req.body.userId } });
         await currentUser.updateOne({
-          $push: { followings: req.params.id },
+          $push: { followings: id },
         });
         res.status(200).json("user has been followed");
       } else {
@@ -90,14 +92,16 @@ studentController.followATeacherByStudent = async (req, res, next) => {
 };
 //Unfollow a teacher from student
 studentController.unFollowATeacherByStudent = async (req, res, next) => {
-  if (req.body.userId !== req.params.id) {
+  const id = req.user.id;
+
+  if (req.body.userId !== id) {
     try {
-      const student = await Student.findById(req.params.id);
+      const student = await Student.findById(id);
       const currentUser = await User.findById(req.body.userId);
       if (student.followers.includes(req.body.userId)) {
         await student.updateOne({ $pull: { followers: req.body.userId } });
         await currentUser.updateOne({
-          $pull: { followings: req.params.id },
+          $pull: { followings: id },
         });
         res.status(200).json("user has been unfollowed");
       } else {
@@ -124,4 +128,24 @@ studentController.unFollowATeacherByStudent = async (req, res, next) => {
 //     return res.status(500).json(err);
 //   }
 // };
+
+// Add cart to student
+studentController.addCartToStudent = async (req, res, next) => {
+  const newCart = new Cart({
+    classId: req.body.classId,
+    idPrice: req.body.idPrice,
+    value: req.body.value,
+    paid: req.body.paid,
+    userId: req.body.userId,
+  });
+  const cart = await newCart.save();
+  try {
+    let id = req.user.id;
+    const student = await Student.findById(id);
+    await student.updateOne({ $push: { cart: newCart } });
+    res.status(200).json(student);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
 module.exports = studentController;

@@ -17,6 +17,8 @@ const StudentSchema = new mongoose.Schema(
       enum: ["Học sinh"],
       default: "Học sinh",
     },
+    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cart" }],
+    packageIsBought: { type: Array, default: [] },
 
     typeOfStudying: {
       type: String,
