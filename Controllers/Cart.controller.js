@@ -3,9 +3,11 @@ const Cart = require("../models/Cart");
 const cartController = {};
 
 //Get all Carts
-cartController.getAllCarts = async (req, res, next) => {
+cartController.getAllCartsPaidOfStudent = async (req, res, next) => {
   try {
-    const allCarts = await Cart.find();
+    const allCarts = await Cart.find( {
+        $and: [{ studentId: req.user.id }, { paid: "Yes" }],
+      });
     res.status(200).json(allCarts);
   } catch (err) {
     res.status(403).json("Cant get all Carts");
@@ -25,19 +27,23 @@ cartController.getACart = async (req, res, next) => {
   }
 };
 
-//Add a Cart(class)
-cartController.addACart = async (req, res, next) => {
+//Update a Cart(class)
+cartController.paidACart = async (req, res, next) => {
   try {
-    //create new Cart(class)
-    const newCart = new Cart({
-      classId: req.body.classId,
-      idPrice: req.body.idPrice,
-      value: req.body.value,
-      paid: req.body.paid,
-    });
-    //Save Cart and respond
-    const cart = await newCart.save();
-    res.status(200).json("Cart is added");
+    console.log("req.user.id", req.user.id);
+    //update Cart(class)
+    const updateCart = await Cart.updateMany(
+      {
+        $and: [{ studentId: req.user.id }, { paid: "No" }],
+      },
+      {
+        $set: {
+          paid: "Yes",
+        },
+      }
+    );
+    console.log("updateCart", updateCart);
+    res.status(200).json(updateCart);
   } catch (err) {
     res.status(500).json(err);
   }

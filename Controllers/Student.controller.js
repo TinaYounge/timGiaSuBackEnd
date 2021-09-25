@@ -132,6 +132,7 @@ studentController.unFollowATeacherByStudent = async (req, res, next) => {
 // Add cart to student
 studentController.addCartToStudent = async (req, res, next) => {
   const newCart = new Cart({
+    studentId: req.user.id,
     classId: req.body.classId,
     idPrice: req.body.idPrice,
     value: req.body.value,

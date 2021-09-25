@@ -5,6 +5,8 @@ const CartSchema = new mongoose.Schema({
   value: { type: Number },
   paid: { type: String, enum: ["Yes", "No"] },
   userId: { type: String },
+  usedClass: { type: String },
+  studentId: { type: String },
 });
 
 module.exports = mongoose.model("Cart", CartSchema);
