@@ -5,9 +5,9 @@ const cartController = {};
 //Get all Carts
 cartController.getAllCartsPaidOfStudent = async (req, res, next) => {
   try {
-    const allCarts = await Cart.find( {
-        $and: [{ studentId: req.user.id }, { paid: "Yes" }],
-      });
+    const allCarts = await Cart.find({
+      $and: [{ studentId: req.user.id }, { paid: "Yes" }],
+    });
     res.status(200).json(allCarts);
   } catch (err) {
     res.status(403).json("Cant get all Carts");
@@ -17,7 +17,6 @@ cartController.getAllCartsPaidOfStudent = async (req, res, next) => {
 cartController.getACart = async (req, res, next) => {
   let aCart = [];
   try {
-    // aCart = await Cart.find({ _id: req.params.id });
     aCart = await Cart.find({
       _id: req.params.id,
     });
@@ -27,10 +26,9 @@ cartController.getACart = async (req, res, next) => {
   }
 };
 
-//Update a Cart(class)
+//Paid a Cart(class)
 cartController.paidACart = async (req, res, next) => {
   try {
-    console.log("req.user.id", req.user.id);
     //update Cart(class)
     const updateCart = await Cart.updateMany(
       {
@@ -48,4 +46,5 @@ cartController.paidACart = async (req, res, next) => {
     res.status(500).json(err);
   }
 };
+
 module.exports = cartController;

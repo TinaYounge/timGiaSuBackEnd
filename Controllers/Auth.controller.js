@@ -23,7 +23,18 @@ authController.register = async (req, res, next) => {
     console.log(err);
   }
 };
-
+//Get Login Me
+authController.loginMe = async (req, res, next) => {
+  try {
+    let id = req.user.id;
+    const user = await User.findById(id)
+      .populate("cart")
+      .populate("classIsBooked");
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
 //Login
 authController.login = async (req, res, next) => {
   try {
@@ -57,4 +68,5 @@ authController.login = async (req, res, next) => {
     console.log(err);
   }
 };
+
 module.exports = authController;

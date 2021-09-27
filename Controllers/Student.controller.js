@@ -2,19 +2,12 @@ const Student = require("../models/Student");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Cart = require("../models/Cart");
+const ClassIsBooked = require("../models/ClassIsBooked");
 
 const studentController = {};
 
 //Update a student
 studentController.updateStudent = async (req, res, next) => {
-  // if (req.body.userId === req.params.id || req.body.isAdmin) {
-  // if (req.body.password) {
-  //   try {
-  //     const salt = await bcrypt.genSalt(10);
-  //     req.body.password = await bcrypt.hash(req.body.password, salt);
-  //   } catch (err) {
-  //     return res.status(500).json(err);
-  //   }
   try {
     const student = await Student.findByIdAndUpdate(
       req.params.id,
@@ -29,10 +22,6 @@ studentController.updateStudent = async (req, res, next) => {
     console.log(err);
     return res.status(500).json(err);
   }
-  //   } else {
-  //     return res.status(403).json("you can update only on your account");
-  //   }
-  // }
 };
 //Delete a student
 studentController.deleteStudent = async (req, res, next) => {
@@ -60,7 +49,9 @@ studentController.deleteStudent = async (req, res, next) => {
 //Get a student
 studentController.getAStudent = async (req, res, next) => {
   try {
-    const student = await Student.findById(req.params.id).populate("cart");
+    const student = await Student.findById(req.params.id)
+      .populate("cart")
+      .populate("classIsBooked");
     res.status(200).json(student);
   } catch (err) {
     return res.status(500).json(err);
@@ -114,20 +105,6 @@ studentController.unFollowATeacherByStudent = async (req, res, next) => {
     res.status(403).json("You can't follow yourself");
   }
 };
-//Add class to user
-// studentController.addClassToUser = async (req, res, next) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     if (!user.classes.includes(req.body.classId)) {
-//       await user.updateOne({ $push: { classes: req.body.classId } });
-//       res.status(200).json("classId is added");
-//     } else {
-//       return res.status(401).json("class you already add before");
-//     }
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// };
 
 // Add cart to student
 studentController.addCartToStudent = async (req, res, next) => {
@@ -138,12 +115,57 @@ studentController.addCartToStudent = async (req, res, next) => {
     value: req.body.value,
     paid: req.body.paid,
     userId: req.body.userId,
+    subject: req.body.subject,
+    classCanBook: req.body.classCanBook,
   });
   const cart = await newCart.save();
   try {
     let id = req.user.id;
+    const teacher = await User.findById(req.body.userId);
+    await teacher.updateOne({ $push: { cart: newCart } });
     const student = await Student.findById(id);
     await student.updateOne({ $push: { cart: newCart } });
+    res.status(200).json(student);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+// Add class is booked to student
+studentController.addClassIsBookedToStudent = async (req, res, next) => {
+  const newClassIsBooked = new ClassIsBooked({
+    studentId: req.user.id,
+    time: {
+      day: req.body.day,
+      timeId: req.body.timeId,
+    },
+    classId: req.body.classId,
+    userId: req.body.User,
+    finished: req.body.finished,
+    typeOfTeaching: req.body.typeOfTeaching,
+    billId: req.body.billId,
+    subject: req.body.subject,
+    reviewFromTeacher: req.body.reviewFromTeacher,
+    teacherAccept: req.body.teacherAccept,
+    teacherIsPay: req.body.teacherIsPay,
+    linkStudy: req.body.linkStudy,
+  });
+
+  console.log("classIsBooked", newClassIsBooked);
+  const classIsBooked = await newClassIsBooked.save();
+  try {
+    let id = req.user.id;
+    const teacher = await User.findById(req.body.userId);
+    await teacher.updateOne({ $push: { classIsBooked: newClassIsBooked } });
+    const student = await Student.findById(id);
+    await student.updateOne({ $push: { classIsBooked: newClassIsBooked } });
+    // const student = await Student.findByIdAndUpdate(
+    //   id,
+    //   {
+    //     $push: { classIsBooked: newClassIsBooked },
+    //   },
+    //   { new: true }
+    // );
     res.status(200).json(student);
   } catch (err) {
     return res.status(500).json(err);

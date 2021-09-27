@@ -28,7 +28,10 @@ authStudentController.register = async (req, res, next) => {
 authStudentController.loginMe = async (req, res, next) => {
   try {
     let id = req.user.id;
-    const student = await Student.findById(id).populate("cart");
+    const student = await Student.findById(id)
+      .populate("cart")
+      .populate("classIsBooked");
+    console.log("student", student);
     res.status(200).json(student);
   } catch (err) {
     console.log(err);

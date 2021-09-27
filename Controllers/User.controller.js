@@ -165,13 +165,30 @@ userController.deleteUser = async (req, res, next) => {
     }
   }
 };
+
+//Get a a user by own teacher
+userController.getAUserByOwnTeacher = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .populate("availableTime")
+      .populate("classIsBooked")
+      .populate("classes")
+      .populate("cart");
+
+    res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
 //Get a user
 userController.getAUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id)
       .populate("availableTime")
       .populate("classIsBooked")
-      .populate("classes");
+      .populate("classes")
+      .populate("cart");
 
     res.status(200).json(user);
   } catch (err) {

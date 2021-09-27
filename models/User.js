@@ -46,6 +46,8 @@ const UserSchema = new mongoose.Schema(
     availableTime: [
       { type: mongoose.Schema.Types.ObjectId, ref: "AvailableUserTime" },
     ],
+    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cart" }],
+
     classIsBooked: [
       { type: mongoose.Schema.Types.ObjectId, ref: "ClassIsBooked" },
     ],

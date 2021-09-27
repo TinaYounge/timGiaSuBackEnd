@@ -4,6 +4,12 @@ const { verifyTokenAndAuthorization, verifyToken } = require("./verifyToken");
 
 //Add cart to student
 router.put("/addCart", verifyToken, studentController.addCartToStudent);
+//Add cart to student
+router.put(
+  "/addClassIsBooked",
+  verifyToken,
+  studentController.addClassIsBookedToStudent
+);
 //Update Student
 router.put("/:id", studentController.updateStudent);
 //Delete Student

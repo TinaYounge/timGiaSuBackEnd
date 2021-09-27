@@ -18,6 +18,9 @@ const StudentSchema = new mongoose.Schema(
       default: "Học sinh",
     },
     cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cart" }],
+    classIsBooked: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "ClassIsBooked" },
+    ],
     packageIsBought: { type: Array, default: [] },
 
     typeOfStudying: {
@@ -25,7 +28,6 @@ const StudentSchema = new mongoose.Schema(
       enum: ["Trực tuyến", "Tại Nhà", "Cả hai"],
       default: "Cả hai",
     },
-    classesBooked: { type: Array, default: [] },
     phoneNumber: { type: Number },
   },
   { timestamps: true }

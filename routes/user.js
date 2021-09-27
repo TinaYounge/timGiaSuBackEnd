@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const userController = require("../Controllers/User.controller");
-const { verifyTokenAndAuthorization } = require("./verifyToken");
+const { verifyTokenAndAuthorization, verifyToken } = require("./verifyToken");
 
 //Search filter users
 router.get("/searchFilterUser", userController.searchFilterUser);
@@ -16,6 +16,8 @@ router.put("/:id", userController.updateUser);
 router.delete("/:id", verifyTokenAndAuthorization, userController.deleteUser);
 //Get a user
 router.get("/:id", userController.getAUser);
+//Get a user by own teacher
+router.get("/", verifyToken, userController.getAUserByOwnTeacher);
 
 router.put(
   "/:id/follow",

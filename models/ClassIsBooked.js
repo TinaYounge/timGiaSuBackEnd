@@ -7,14 +7,16 @@ const ClassIsBookedSchema = new mongoose.Schema({
   },
   // classId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
   classId: { type: String },
+  subject: { type: String },
   userId: { type: String },
   studentId: { type: String },
   finished: { type: String, enum: ["Yes", "No"] },
-  typeOfTeaching: { type: String, enum: ["Online", "Offline"] },
+  typeOfTeaching: { type: String, enum: ["Tại Nhà", "Trực tuyến"] },
   billId: { type: String },
   reviewFromTeacher: { type: String },
   teacherAccept: { type: String, enum: ["Yes", "No"] },
   teacherIsPay: { type: String, enum: ["Yes", "No"] },
+  linkStudy: { type: String },
 });
 
 module.exports = mongoose.model("ClassIsBooked", ClassIsBookedSchema);
