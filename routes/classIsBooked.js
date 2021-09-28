@@ -11,8 +11,13 @@ router.get(
 
 //Get a class is booked
 router.get("/:id", classBookedController.getAClassIsBooked);
-//Add a class is booked
+//Update a class is booked
 router.put("/:id/updateClassIsBook", classBookedController.updateClassIsBook);
+//Update a class is booked is Finished
+router.put(
+  "/:id/updateClassIsBookFinished",
+  classBookedController.updateClassIsBookFinished
+);
 //Add a class is booked
 router.post("/addAclassIsBooked", classBookedController.addAClassIsBooked);
 

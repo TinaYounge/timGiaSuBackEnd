@@ -28,7 +28,8 @@ const StudentSchema = new mongoose.Schema(
       enum: ["Trực tuyến", "Tại Nhà", "Cả hai"],
       default: "Cả hai",
     },
-    phoneNumber: { type: Number },
+    phoneNumber: { type: String },
+    address: { type: String },
   },
   { timestamps: true }
 );

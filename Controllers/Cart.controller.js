@@ -40,7 +40,6 @@ cartController.paidACart = async (req, res, next) => {
         },
       }
     );
-    console.log("updateCart", updateCart);
     res.status(200).json(updateCart);
   } catch (err) {
     res.status(500).json(err);

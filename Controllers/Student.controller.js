@@ -133,6 +133,8 @@ studentController.addCartToStudent = async (req, res, next) => {
 
 // Add class is booked to student
 studentController.addClassIsBookedToStudent = async (req, res, next) => {
+  let id = req.user.id;
+  const student = await Student.findById(id);
   const newClassIsBooked = new ClassIsBooked({
     studentId: req.user.id,
     time: {
@@ -140,7 +142,7 @@ studentController.addClassIsBookedToStudent = async (req, res, next) => {
       timeId: req.body.timeId,
     },
     classId: req.body.classId,
-    userId: req.body.User,
+    userId: req.body.userId,
     finished: req.body.finished,
     typeOfTeaching: req.body.typeOfTeaching,
     billId: req.body.billId,
@@ -149,15 +151,17 @@ studentController.addClassIsBookedToStudent = async (req, res, next) => {
     teacherAccept: req.body.teacherAccept,
     teacherIsPay: req.body.teacherIsPay,
     linkStudy: req.body.linkStudy,
+    studentPlace:
+      student.address + ", " + student.district + ", " + student.city,
+    studentPhone: student.phoneNumber,
+    studentProfilePicture: student.profilePicture,
   });
-
-  console.log("classIsBooked", newClassIsBooked);
   const classIsBooked = await newClassIsBooked.save();
+  console.log("classIsBooked", classIsBooked);
+
   try {
-    let id = req.user.id;
     const teacher = await User.findById(req.body.userId);
     await teacher.updateOne({ $push: { classIsBooked: newClassIsBooked } });
-    const student = await Student.findById(id);
     await student.updateOne({ $push: { classIsBooked: newClassIsBooked } });
     // const student = await Student.findByIdAndUpdate(
     //   id,

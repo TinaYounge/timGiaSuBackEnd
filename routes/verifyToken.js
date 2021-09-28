@@ -2,15 +2,12 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log("req.headers.authorization", req.headers);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    console.log("token1", token);
 
     jwt.verify(token, process.env.JWT_SEC, (err, user) => {
       if (err) res.status(403).json(err);
       req.user = user;
-      console.log("token", user);
       next();
     });
   } else {

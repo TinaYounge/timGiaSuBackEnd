@@ -10,13 +10,19 @@ const ClassIsBookedSchema = new mongoose.Schema({
   subject: { type: String },
   userId: { type: String },
   studentId: { type: String },
-  finished: { type: String, enum: ["Yes", "No"] },
-  typeOfTeaching: { type: String, enum: ["Tại Nhà", "Trực tuyến"] },
+  finished: { type: String, enum: ["Yes", "No", "Refuse"] },
+  typeOfTeaching: { type: String, enum: ["Tại nhà", "Trực tuyến"] },
   billId: { type: String },
   reviewFromTeacher: { type: String },
+  reviewFromStudent: { type: String },
   teacherAccept: { type: String, enum: ["Yes", "No"] },
   teacherIsPay: { type: String, enum: ["Yes", "No"] },
   linkStudy: { type: String },
+  teacherShow: { type: String, enum: ["Yes", "No"] },
+  studentShow: { type: String, enum: ["Yes", "No"] },
+  studentPlace: { type: String },
+  studentPhone: { type: String },
+  studentProfilePicture: { type: String },
 });
 
 module.exports = mongoose.model("ClassIsBooked", ClassIsBookedSchema);

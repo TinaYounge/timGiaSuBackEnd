@@ -9,10 +9,18 @@ classBookedController.getAllClassIsBookeds = async (req, res, next) => {
     const allClassIsBookeds = await ClassIsBooked.aggregate([
       {
         $match: {
-          $and: [{ studentId: req.user.id }, { teacherAccept: "Yes" }],
+          $or: [
+            { $and: [{ userId: req.user.id }, { teacherAccept: "Yes" }] },
+            { $and: [{ studentId: req.user.id }, { teacherAccept: "Yes" }] },
+          ],
         },
       },
-      { $sort: { day: 1 } },
+      {
+        $addFields: {
+          date: "$time.day",
+        },
+      },
+      { $sort: { date: 1 } },
     ]);
     // const allClassIsBookeds = await ClassIsBooked.find({
     //   studentId: req.user.id,
@@ -65,7 +73,10 @@ classBookedController.updateClassIsBook = async (req, res, next) => {
     const aUpdateCart = await Cart.findById(aUpdateClassIsBooked.billId);
     const classCanBookBefore = aUpdateCart.classCanBook;
     const classCanBookAfter = classCanBookBefore - 1;
-    if (classCanBookAfter >= 0) {
+    if (
+      classCanBookAfter >= 0 &&
+      aUpdateClassIsBooked.teacherAccept === "Yes"
+    ) {
       const aClassCanBookAfter = await Cart.findByIdAndUpdate(
         aUpdateClassIsBooked.billId,
         {
@@ -76,6 +87,23 @@ classBookedController.updateClassIsBook = async (req, res, next) => {
     } else {
       res.status(403).json("Đã quá buổi học có thể đặt");
     }
+    res.status(200).json(aUpdateClassIsBooked);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+//Update  a classIsBook and change the class is finished
+classBookedController.updateClassIsBookFinished = async (req, res, next) => {
+  try {
+    const aUpdateClassIsBooked = await ClassIsBooked.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+
     res.status(200).json(aUpdateClassIsBooked);
   } catch (err) {
     res.status(500).json(err);
