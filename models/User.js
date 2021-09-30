@@ -13,7 +13,12 @@ const UserSchema = new mongoose.Schema(
     followers: { type: Array, default: [] },
     followings: { type: Array, default: [] },
     isAdmin: { type: Boolean, default: false },
-    desc: { type: String, max: 500, default: "Tôi là môt.." },
+    descLong: {
+      type: String,
+      max: 300,
+      default: "Mình có kinh nghiệm dạy lâu năm, yêu nghề",
+    },
+    desc: { type: String, max: 200, default: "Tôi là môt.." },
     district: { type: String, default: "Quận 10" },
     city: { type: String, default: "Hồ Chi Minh" },
     sex: { type: String, enum: ["Nam", "Nữ", "Khác"], default: "Nam" },
@@ -52,7 +57,18 @@ const UserSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "ClassIsBooked" },
     ],
     vote: { type: Array, default: [] },
+    review: [
+      {
+        studentProfilePicture: { type: String },
+        value: { type: String },
+        studentName: { type: String },
+      },
+    ],
     // classIsBooked: { type: Array, default: [] },
+    youtube: {
+      type: Array,
+      default: "https://www.youtube.com/embed/es7XtrloDIQ",
+    },
     certificate: { type: Array, default: [] },
     bankCard: { type: String },
     AdminChecked: {

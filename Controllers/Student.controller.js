@@ -155,9 +155,10 @@ studentController.addClassIsBookedToStudent = async (req, res, next) => {
       student.address + ", " + student.district + ", " + student.city,
     studentPhone: student.phoneNumber,
     studentProfilePicture: student.profilePicture,
+    studentFullname: student.fullname,
   });
   const classIsBooked = await newClassIsBooked.save();
-  console.log("classIsBooked", classIsBooked);
+  console.log("classIsBooked", student.fullname);
 
   try {
     const teacher = await User.findById(req.body.userId);

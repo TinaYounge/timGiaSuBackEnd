@@ -23,6 +23,7 @@ const ClassIsBookedSchema = new mongoose.Schema({
   studentPlace: { type: String },
   studentPhone: { type: String },
   studentProfilePicture: { type: String },
+  studentFullname: { type: String },
 });
 
 module.exports = mongoose.model("ClassIsBooked", ClassIsBookedSchema);

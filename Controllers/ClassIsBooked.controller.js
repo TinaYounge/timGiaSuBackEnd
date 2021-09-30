@@ -1,5 +1,6 @@
 const Cart = require("../models/Cart");
 const ClassIsBooked = require("../models/ClassIsBooked");
+const User = require("../models/User");
 
 const classBookedController = {};
 
@@ -26,7 +27,6 @@ classBookedController.getAllClassIsBookeds = async (req, res, next) => {
     //   studentId: req.user.id,
     //   teacherAccept: "Yes",
     // });
-    console.log("allClassIsBookeds", allClassIsBookeds);
     res.status(200).json(allClassIsBookeds);
   } catch (err) {
     res.status(403).json("Cant get all ClassIsBookeds");
@@ -100,6 +100,21 @@ classBookedController.updateClassIsBookFinished = async (req, res, next) => {
       req.params.id,
       {
         $set: req.body,
+      },
+      { new: true }
+    );
+    const aClassIsBooked = await ClassIsBooked.findById(req.params.id);
+    let reviewFromStudent = {
+      studentProfilePicture: aClassIsBooked.studentProfilePicture,
+      value: aClassIsBooked.reviewFromStudent,
+      studentName: aClassIsBooked.studentFullname,
+    };
+    const userWithReview = await User.findByIdAndUpdate(
+      aClassIsBooked.userId,
+      {
+        $push: {
+          review: reviewFromStudent,
+        },
       },
       { new: true }
     );
