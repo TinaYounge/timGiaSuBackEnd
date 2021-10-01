@@ -85,7 +85,6 @@ async function seedDB() {
     //   "Quận Ứng Hòa",
     // ];
     let cityAll = ["Hồ Chí Minh"];
-    // let districta = "";
     let typeOfTeachingAll = ["Trực tuyến", "Tại nhà", "Cả hai"];
     let highestCertificateAll = ["Cao đẳng", "Đại học", "Thạc sĩ", "Tiến sĩ"];
     let voteAll = [
@@ -163,19 +162,7 @@ async function seedDB() {
         bankCard,
         AdminChecked,
       };
-      // for (let j = 0; j < 50; j++) {
-      //   if ((newDay.city = "Ho Chi Minh")) {
-      //     districta =
-      //       districtHCM[Math.floor(Math.random() * districtHCM.length)];
-      //   } else {
-      //     districta =
-      //       districtHaNoi[Math.floor(Math.random() * districtHaNoi.length)];
-      //   }
-      //   let newDistrict = {
-      //     district: districta,
-      //   };
-      //   timeSeriesData.district.push(newDistrict);
-      // }
+
       timeSeriesData.push(newDay);
     }
     await collection.insertMany(timeSeriesData);

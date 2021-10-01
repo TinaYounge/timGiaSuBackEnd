@@ -158,19 +158,12 @@ studentController.addClassIsBookedToStudent = async (req, res, next) => {
     studentFullname: student.fullname,
   });
   const classIsBooked = await newClassIsBooked.save();
-  console.log("classIsBooked", student.fullname);
 
   try {
     const teacher = await User.findById(req.body.userId);
     await teacher.updateOne({ $push: { classIsBooked: newClassIsBooked } });
     await student.updateOne({ $push: { classIsBooked: newClassIsBooked } });
-    // const student = await Student.findByIdAndUpdate(
-    //   id,
-    //   {
-    //     $push: { classIsBooked: newClassIsBooked },
-    //   },
-    //   { new: true }
-    // );
+
     res.status(200).json(student);
   } catch (err) {
     return res.status(500).json(err);

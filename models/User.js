@@ -44,10 +44,8 @@ const UserSchema = new mongoose.Schema(
       default: "Cả hai",
     },
     classes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subject" }],
-    // classes: { type: Array, default: [] },
 
     phoneNumber: { type: Number },
-    //availableTime can not populate? dont know why
     availableTime: [
       { type: mongoose.Schema.Types.ObjectId, ref: "AvailableUserTime" },
     ],
@@ -64,7 +62,6 @@ const UserSchema = new mongoose.Schema(
         studentName: { type: String },
       },
     ],
-    // classIsBooked: { type: Array, default: [] },
     youtube: {
       type: Array,
       default: "https://www.youtube.com/embed/es7XtrloDIQ",
